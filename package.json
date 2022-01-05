@@ -22,7 +22,8 @@
     "start": "npm run watch",
     "watch": "tsc -w",
     "prebuild": "rm -rf node_modules && rm -rf package-lock.json && npm i && rimraf dist",
-    "build": "npm run fix && npm run lint && ncc build src/index.ts -m -e @serverless-devs/core -o dist"
+    "build": "esbuild src/index.ts --bundle --log-level=error --minify --platform=node --format=cjs --target=node10.4 --external:@serverless-devs/core --outfile=dist/index.js"
+
   },
   "dependencies": {
     "@alicloud/fc2": "^2.3.0",
