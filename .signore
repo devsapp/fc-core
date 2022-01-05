@@ -8,19 +8,18 @@ package-lock.json
 .eslintignore
 .editorconfig
 .gitignore
+.signore
 
 .github
 .idea
 .vscode
 .DS_Store
 .git
-.env
-docs
-example
 
 README.md
-test
-Makefile
-tsconfig.json
-f2elint.config.js
-commitlint.config.js
+./examples
+./test
+./Makefile
+./f2elint.config.js
+./commitlint.config.js
+./docs
