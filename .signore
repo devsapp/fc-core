@@ -17,9 +17,12 @@ package-lock.json
 .git
 
 README.md
+readme.md
+src
 ./examples
 ./test
 ./Makefile
 ./f2elint.config.js
 ./commitlint.config.js
 ./docs
+tsconfig.json
