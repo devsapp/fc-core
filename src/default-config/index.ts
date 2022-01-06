@@ -1,7 +1,6 @@
-import { jsyaml } from '@serverless-devs/core';
+import { getYamlContent } from '@serverless-devs/core';
 import * as path from 'path';
 import os from 'os';
-import fs from 'fs';
 
 /**
  * 获取 fc-default 所有的配置
@@ -11,7 +10,7 @@ export async function getConfigFromFile() {
   const defaultConfigFileObject = path.join(os.homedir(), '.s', '.fc.default.yaml');
   let yamlData = {};
   try {
-    yamlData = await jsyaml.load(fs.readFileSync(defaultConfigFileObject, 'utf8'));
+    yamlData = await getYamlContent(defaultConfigFileObject);
   } catch (e) {
     yamlData = { 'deploy-type': 'sdk' };
   }

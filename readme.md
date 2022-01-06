@@ -126,3 +126,52 @@ throw new CatchableError("Please provide region in your props.");
   [key: string]: string
 }
 ````
+
+### isCustomContainerRuntime 判断是否是镜像运行时
+
+入参
+````
+/**
+ * @param runtime string
+ */
+````
+
+返回值 `boolean`
+
+
+### isCustomRuntime 判断是否是镜像运行时
+
+入参
+````
+/**
+ * @param runtime string
+ */
+````
+
+返回值 `boolean`
+
+### isAuto 判断是否是镜像运行时
+
+入参
+````
+/**
+ * @param runtime string
+ */
+````
+
+返回值 `boolean`
+
+
+### genDomainName domain auto 生成域名的规则
+
+入参
+````
+/**
+ * @param uid 用户主账号 id
+ * @param region
+ * @param serviceName 
+ * @param functionName 
+ */
+````
+
+返回值 `string`
