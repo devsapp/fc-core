@@ -4,7 +4,7 @@ import { bytesToSize, getDockerInfo } from "./utils";
 import logger from "../utils/logger";
 
 export { pullImageIfNeed, resolveRuntimeToDockerImage } from "./pull-images";
-export { preExecute } from "./pre-execute";
+export { preExecute, checkDocker, cleanUselessImagesByTag } from "./pre-execute";
 export { IMAGE_VERSION } from "./utils";
 
 /**
