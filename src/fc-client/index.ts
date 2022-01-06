@@ -1,25 +1,40 @@
+import _ from "lodash";
 import FC from "@alicloud/fc2";
+import { getCredential } from '@serverless-devs/core';
 import { CatchableError } from "../utils/errors";
 import { checkEndpoint, getEndpointFromFcDefault } from "./endpoint";
-import { InputProps } from "../utils/interface";
 import logger from "../utils/logger";
-import { getCredentials } from "../common";
+import { MakeFcClientInput } from "../utils/interface";
+import { ICredentials } from "../interface";
 
-const DEFAULT_TIMEOUT = 600 * 1000;
+const DEFAULT_TIMEOUT = 600;
 
 /**
  * 获取 fc client
- * @param {InputProps} inputs
+ * @param props: { access: string; region: string; timeout?: number; credentials?: ICredentials; }
  * @returns
  */
-export async function makeFcClient(inputs: InputProps) {
-  logger.debug(`input: ${JSON.stringify(inputs.props)}`);
-  const region: string = inputs?.props?.region;
-  const timeout: number = inputs?.props?.timeout;
+export async function makeFcClient(props: MakeFcClientInput) {
+  logger.debug(`input: ${JSON.stringify(props)}`);
+  const region: string = props.region;
+  const timeout: number = (props.timeout || DEFAULT_TIMEOUT) * 1000;
   if (!region) {
     throw new CatchableError("Please provide region in your props.");
   }
-  const { credentials } = await getCredentials(inputs);
+
+  let credentials: ICredentials;
+  if (_.isEmpty(props.credentials)) {
+    const credentialRes: any = await getCredential(props.access);
+    credentials = {
+      AccountID: credentialRes?.AccountID,
+      AccessKeyID: credentialRes?.AccessKeyID,
+      AccessKeySecret: credentialRes?.AccessKeySecret,
+      SecurityToken: credentialRes?.SecurityToken,
+      endpoint: credentialRes?.endpoing,
+    };
+  } else {
+    credentials = _.isEmpty(props.credentials);
+  }
 
   const endpointFromCredentials: string = credentials.endpoint;
   const endpointFromFcDefault: string = await getEndpointFromFcDefault();

@@ -1,39 +1,8 @@
-import * as core from "@serverless-devs/core";
-import { ICredentials, InputProps } from "./utils/interface";
-import * as _ from "lodash";
 import * as fs from "fs";
 import { execSync } from "child_process";
 import commandExists from "command-exists";
 import os from "os";
 import path from "path";
-
-/**
- * 获取 credentials 值
- * @param {InputProps} inputs
- * @returns {ICredentials}
- */
-export async function getCredentials(
-  inputs: InputProps
-): Promise<{ access: string; credentials: ICredentials }> {
-  if (!_.isEmpty(inputs?.credentials)) {
-    return {
-      access: inputs?.project?.access,
-      credentials: inputs.credentials,
-    };
-  }
-  const res: any = await core.getCredential(inputs?.project?.access);
-  const credentials: ICredentials = {
-    AccountID: res?.AccountID,
-    AccessKeyID: res?.AccessKeyID,
-    AccessKeySecret: res?.AccessKeySecret,
-    SecurityToken: res?.SecurityToken,
-    endpoint: res?.endpoing,
-  };
-  return {
-    access: res?.Alias,
-    credentials,
-  };
-}
 
 /**
  * 检查环境是否安装python，java，nodejs等语言环境

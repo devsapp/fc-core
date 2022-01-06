@@ -26,7 +26,6 @@ export async function genContainerResourcesLimitConfig(
     throw new CatchableError(
       `ContainerMemory is set to an invalid value. The value must be a multiple of 64 MB. (actual: '${memorySize}').`
     );
-    return;
   } else if (
     memorySize > 3072 &&
     ![4096, 8192, 16384, 32768].includes(memorySize)
@@ -34,7 +33,6 @@ export async function genContainerResourcesLimitConfig(
     throw new CatchableError(
       `Memory is set to an invalid value (allowed: 4096 | 8192 | 16384 | 32768, actual: '${memorySize}').`
     );
-    return;
   }
 
   const dockerInfo = getDockerInfo();
