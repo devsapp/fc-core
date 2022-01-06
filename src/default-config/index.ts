@@ -1,5 +1,6 @@
 import { getYamlContent } from '@serverless-devs/core';
 import * as path from 'path';
+import _ from 'lodash';
 import os from 'os';
 
 /**
@@ -8,11 +9,12 @@ import os from 'os';
  */
 export async function getConfigFromFile() {
   const defaultConfigFileObject = path.join(os.homedir(), '.s', '.fc.default.yaml');
-  let yamlData = {};
+  let yamlData;
   try {
     yamlData = await getYamlContent(defaultConfigFileObject);
-  } catch (e) {
-    yamlData = { 'deploy-type': 'sdk' };
+  } catch (_e) { /* 不阻塞程序运行 */ }
+  if (_.isEmpty(yamlData)) {
+    yamlData = { 'deploy-type': 'sdk' }
   }
   yamlData['deploy-type'] = process.env['s-default-deploy-type'] || process.env.s_default_deploy_type || yamlData['deploy-type'];
   yamlData['fc-endpoint'] = process.env['s-default-fc-endpoint'] || process.env.s_default_fc_endpoint || yamlData['fc-endpoint'];
