@@ -1,18 +1,11 @@
-import { execSync } from "child_process";
 import _ from "lodash";
 import { CatchableError } from "../utils/errors";
-import { bytesToSize } from "./utils";
+import { bytesToSize, getDockerInfo } from "./utils";
 import logger from "../utils/logger";
 
 export { pullImageIfNeed, resolveRuntimeToDockerImage } from "./pull-images";
 export { preExecute } from "./pre-execute";
 export { IMAGE_VERSION } from "./utils";
-
-export function getDockerInfo(): any {
-  const execRes = execSync('docker info --format "{{json .}}"');
-  const dockerInfo = JSON.parse(execRes.toString());
-  return dockerInfo;
-}
 
 /**
  * 生成容器资源限制配置
@@ -78,6 +71,10 @@ Now the limit of RAM resource is ${MemTotal} bytes. To improve the limit, please
   };
 }
 
+/**
+ * 是不是虚拟机的 docker 环境
+ * @returns 
+ */
 export async function isDockerToolBox() {
   // check version
   const dockerInfo = getDockerInfo();

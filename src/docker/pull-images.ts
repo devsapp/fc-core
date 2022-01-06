@@ -71,7 +71,11 @@ async function pullImage(docker, imageName: string): Promise<string> {
   });
 }
 
-// pullImageIfNeed(docker, 'aliyunfc/runtime-python3.6:build-1.10.0');
+/**
+ * 是否需要拉取镜像
+ * @param docker 
+ * @param imageName 
+ */
 export async function pullImageIfNeed(
   docker,
   imageName: string
@@ -93,6 +97,7 @@ const runtimeImageMap: { [key: string]: string } = {
   nodejs8: "nodejs8",
   nodejs10: "nodejs10",
   nodejs12: "nodejs12",
+  nodejs14: "nodejs14",
   "python2.7": "python2.7",
   python3: "python3.6",
   java8: "java8",
@@ -102,6 +107,12 @@ const runtimeImageMap: { [key: string]: string } = {
   custom: "custom",
 };
 
+/**
+ * docker image 的地址
+ * @param runtime 
+ * @param isBuild 
+ * @returns 
+ */
 export async function resolveRuntimeToDockerImage(
   runtime: string,
   isBuild?: boolean

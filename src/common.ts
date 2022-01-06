@@ -7,10 +7,6 @@ import commandExists from "command-exists";
 import os from "os";
 import path from "path";
 
-export { formatterOutput } from "./utils/formatter-output";
-export { CatchableError } from "./utils/errors";
-export * from "./utils/interface";
-
 /**
  * 获取 credentials 值
  * @param {InputProps} inputs
