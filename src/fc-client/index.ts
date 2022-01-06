@@ -55,7 +55,7 @@ export async function makeFcClient(props: MakeFcClientInput) {
     endpoint = endpointFromFcDefault;
   }
   if (endpoint) {
-    logger.info(`Using endpoint ${endpoint}`);
+    logger.debug(`Using endpoint ${endpoint}`);
   }
   return new FC(credentials.AccountID, {
     accessKeyID: credentials.AccessKeyID,

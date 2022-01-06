@@ -48,7 +48,7 @@ export async function genContainerResourcesLimitConfig(
   let memory = memorySize * 1024 * 1024; // bytes
   if (memory > MemTotal) {
     memory = MemTotal;
-    logger.warn(`The memory config exceeds the docker limit. The memory actually allocated: ${bytesToSize(
+    logger.debug(`The memory config exceeds the docker limit. The memory actually allocated: ${bytesToSize(
       memory
     )}.
 Now the limit of RAM resource is ${MemTotal} bytes. To improve the limit, please refer: https://docs.docker.com/desktop/${

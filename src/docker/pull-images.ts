@@ -33,7 +33,7 @@ async function pullImage(docker, imageName: string): Promise<string> {
   const stream = await docker.pull(resolveImageName);
 
   return await new Promise((resolve, reject) => {
-    logger.info(`Begin pulling image ${imageName}, you can also use docker pull ${imageName} to pull image by yourself.`);
+    logger.debug(`Begin pulling image ${imageName}, you can also use docker pull ${imageName} to pull image by yourself.`);
 
     const onFinished = async (err) => {
       if (err) {
@@ -88,7 +88,7 @@ export async function pullImageIfNeed(
   if (_.size(images) === 0) {
     await pullImage(docker, imageName);
   } else {
-    logger.info(`Skip pulling image ${imageName}...`);
+    logger.debug(`Skip pulling image ${imageName}...`);
   }
 }
 
