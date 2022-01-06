@@ -1,20 +1,27 @@
-import * as core from "@serverless-devs/core";
 import { CatchableError } from "../utils/errors";
+import { getConfigFromFile } from '../default-config';
 
+/**
+ * 获取自定义 endpoint
+ * @returns 
+ */
 export async function getEndpointFromFcDefault(): Promise<string | null> {
-  const fcDefault = await core.loadComponent("devsapp/fc-default");
-  const fcEndpoint: string = await fcDefault.get({ args: "fc-endpoint" });
-  if (!fcEndpoint) {
-    return null;
+  const fcDefault = await getConfigFromFile();
+  const fcEndpoint: string = fcDefault['fc-endpoint'];
+  const enableFcEndpoint: any = fcDefault['enable-fc-endpoint'];
+  if (fcEndpoint && (enableFcEndpoint === true || enableFcEndpoint === "true")) {
+    return fcEndpoint;
   }
-  const enableFcEndpoint: any = await fcDefault.get({
-    args: "enable-fc-endpoint",
-  });
-  return enableFcEndpoint === true || enableFcEndpoint === "true"
-    ? fcEndpoint
-    : null;
+  return null;
 }
 
+/**
+ * 检测内网自定义 endpoint
+ * @param region 
+ * @param accountId 
+ * @param endpoint 
+ * @returns 
+ */
 export function checkEndpoint(
   region: string,
   accountId: string,
@@ -28,22 +35,30 @@ export function checkEndpoint(
       throw new CatchableError(
         `Please make accountId: ${accountIdInEndpoint} in custom endpoint equal to accountId: ${accountId} you provided.`
       );
-      return false;
     }
     if (!regionInEndpoint.startsWith(region)) {
       throw new CatchableError(
         `Please make region: ${regionInEndpoint} in custom endpoint equal to accountId: ${region} you provided.`
       );
-      return false;
     }
   }
   return true;
 }
 
+/**
+ * 提取 accountId
+ * @param endpoint 
+ * @returns 
+ */
 export function extractAccountId(endpoint: string): string | null {
   return extract(/^https?:\/\/([^.]+)\..+$/, endpoint);
 }
 
+/**
+ * 提取 region
+ * @param endpoint 
+ * @returns 
+ */
 export function extractRegion(endpoint: string): string | null {
   return extract(/^https?:\/\/[^.]+\.([^.]+)\..+$/, endpoint);
 }

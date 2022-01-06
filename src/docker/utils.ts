@@ -1,6 +1,10 @@
 import _ from "lodash";
 import { execSync } from "child_process";
 
+/**
+ * 获取 docker 的信息
+ * @returns 
+ */
 export function getDockerInfo(): any {
   const execRes = execSync('docker info --format "{{json .}}"');
   const dockerInfo = JSON.parse(execRes.toString());
@@ -47,11 +51,3 @@ export const DOCKER_REGISTRIES = [
   "registry.cn-beijing.aliyuncs.com",
   "registry.hub.docker.com",
 ];
-
-export function isCustomContainerRuntime(runtime: string): boolean {
-  return runtime === "custom-container";
-}
-
-export function isCustomRuntime(runtime: string): boolean {
-  return runtime === "custom";
-}

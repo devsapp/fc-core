@@ -9,14 +9,6 @@ interface Obj {
   [key: string]: any;
 }
 
-// sdk 没有相关接口
-/**
- * 获取账号信息，一般获取支持可用区
- */
-FC.prototype.getAccountSettings = function (options = {}, headers = {}) {
-  return this.get("/account-settings", options, headers);
-};
-
 /**
  * 发送请求（基础方法，非调用 HTTP 函数不建议使用）:
  * 1. 请求错误日志会被吞掉

@@ -12,7 +12,7 @@ DraftLog.into(console);
  * @param docker: Docker 实例
  * @param tag
  */
-const cleanUselessImagesByTag = async (docker) => {
+export const cleanUselessImagesByTag = async (docker) => {
   // TODO: loading 效果
   const listImages: Array<any> = await docker.listImages({
     filters: '{"label": ["maintainer=alibaba-serverless-fc"]}',
@@ -37,7 +37,7 @@ const cleanUselessImagesByTag = async (docker) => {
 /**
  * 执行之前检查Docker环境
  */
-function checkDocker() {
+export function checkDocker() {
   if (!commandExists("docker")) {
     throw new CatchableError(
       "Failed to start docker, Please ensure that docker is installed on your computer."

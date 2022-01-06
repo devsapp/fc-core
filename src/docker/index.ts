@@ -1,18 +1,11 @@
-import { execSync } from "child_process";
 import _ from "lodash";
 import { CatchableError } from "../utils/errors";
-import { bytesToSize } from "./utils";
+import { bytesToSize, getDockerInfo } from "./utils";
 import logger from "../utils/logger";
 
 export { pullImageIfNeed, resolveRuntimeToDockerImage } from "./pull-images";
-export { preExecute } from "./pre-execute";
+export { preExecute, checkDocker, cleanUselessImagesByTag } from "./pre-execute";
 export { IMAGE_VERSION } from "./utils";
-
-export function getDockerInfo(): any {
-  const execRes = execSync('docker info --format "{{json .}}"');
-  const dockerInfo = JSON.parse(execRes.toString());
-  return dockerInfo;
-}
 
 /**
  * 生成容器资源限制配置
@@ -33,7 +26,6 @@ export async function genContainerResourcesLimitConfig(
     throw new CatchableError(
       `ContainerMemory is set to an invalid value. The value must be a multiple of 64 MB. (actual: '${memorySize}').`
     );
-    return;
   } else if (
     memorySize > 3072 &&
     ![4096, 8192, 16384, 32768].includes(memorySize)
@@ -41,7 +33,6 @@ export async function genContainerResourcesLimitConfig(
     throw new CatchableError(
       `Memory is set to an invalid value (allowed: 4096 | 8192 | 16384 | 32768, actual: '${memorySize}').`
     );
-    return;
   }
 
   const dockerInfo = getDockerInfo();
@@ -57,7 +48,7 @@ export async function genContainerResourcesLimitConfig(
   let memory = memorySize * 1024 * 1024; // bytes
   if (memory > MemTotal) {
     memory = MemTotal;
-    logger.warn(`The memory config exceeds the docker limit. The memory actually allocated: ${bytesToSize(
+    logger.debug(`The memory config exceeds the docker limit. The memory actually allocated: ${bytesToSize(
       memory
     )}.
 Now the limit of RAM resource is ${MemTotal} bytes. To improve the limit, please refer: https://docs.docker.com/desktop/${
@@ -78,6 +69,10 @@ Now the limit of RAM resource is ${MemTotal} bytes. To improve the limit, please
   };
 }
 
+/**
+ * 是不是虚拟机的 docker 环境
+ * @returns 
+ */
 export async function isDockerToolBox() {
   // check version
   const dockerInfo = getDockerInfo();
