@@ -175,3 +175,46 @@ throw new CatchableError("Please provide region in your props.");
 ````
 
 返回值 `string`
+
+### buildLink build之后热更的能力
+
+入参
+````
+/**
+* @param props : {
+  configDirPath: yaml 路径
+  codeUri: 代码路径
+  serviceName: 服务名称
+  functionName: 函数名称
+  excludeFiles: 忽略的路径
+} */
+````
+
+返回无
+
+
+### genBuildLinkFilesListJSONPath 热更的能力的缓存文件
+
+入参
+````
+/**
+* @param baseDir s.yaml 的路径
+* @param serviceName 服务名称
+* @param functionName 函数名称
+*/
+````
+
+返回 `string`
+
+### getBuildArtifactPath build产物的文件夹路径
+
+入参
+````
+/**
+* @param baseDir s.yaml 的路径
+* @param serviceName 服务名称
+* @param functionName 函数名称
+*/
+````
+
+返回 `string`

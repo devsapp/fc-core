@@ -33,7 +33,7 @@ export async function makeFcClient(props: MakeFcClientInput) {
       endpoint: credentialRes?.endpoing,
     };
   } else {
-    credentials = _.isEmpty(props.credentials);
+    credentials = props.credentials;
   }
 
   const endpointFromCredentials: string = credentials.endpoint;
