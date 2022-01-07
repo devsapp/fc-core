@@ -21,7 +21,7 @@
 ````
 返回 `fc 客户端`
 
-### IMAGE_VERSION 镜像的版本
+### IMAGE_VERSION 镜像的版本（常量）
 
 ### resolveRuntimeToDockerImage 获取docker 镜像的地址
 
@@ -218,3 +218,47 @@ throw new CatchableError("Please provide region in your props.");
 ````
 
 返回 `string`
+
+
+### DeployCache deploy缓存相关（构造函数）
+
+#### 获取缓存数据
+示例
+
+````
+async function test() {
+  const sYaml = '/Users/main/fc-custom-typescript-event/s.yaml';
+  const region = 'cn-chengdu';
+  const accountID = '143********149';
+
+  const serviceName = 'test-custom-config';
+  const functionName = 'tsEventFunc';
+  const triggerNames = ['httpTrigger'];
+  const customDomains = ['auto'];
+  
+  const g = new DeployCache(accountID, region, sYaml);
+  const res = await g.getYamlState({
+    serviceName,
+    functionName,
+    triggerNames,
+    customDomains,
+  });
+  console.log(JSON.stringify(res, null, 2));
+}
+
+test()
+````
+
+#### 获取缓存Id
+
+DeployCache.genServiceStateID
+参数：(accountID: string, region: string, serviceName: string)
+
+DeployCache.genFunctionStateID
+参数：(accountID: string, region: string, serviceName: string, functionName: string)
+
+DeployCache.genTriggerStateID
+参数：(accountID: string, region: string, serviceName: string, functionName: string, triggerName: string)
+
+DeployCache.genDomainStateID
+(domainName: string, genDomainProps?: { accountID: string; region: string; serviceName: string; functionName: string; })
