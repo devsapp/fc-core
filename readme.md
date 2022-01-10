@@ -98,6 +98,36 @@
 [result: boolean, details: string]
 ````
 
+### setBuildStatus 设置 build 的状态
+
+入参
+````
+/**
+ * @param serviceName 
+ * @param functionName 
+ * @param sYaml s.yaml 配置的地址，默认是 process.cwd()
+ * @param status 设置的值 `available` | `unavailable`
+ */
+````
+
+返回值 无
+
+### getBuildStatus 获取 build 的状态
+
+入参
+````
+/**
+ * @param serviceName 
+ * @param functionName 
+ * @param sYaml s.yaml 配置的地址，默认是 process.cwd()
+ */
+````
+
+返回值
+````
+{ status: boolean, error?: CatchableError }
+````
+
 ### CatchableError 提示性错误
 
 入参
