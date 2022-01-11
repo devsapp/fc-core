@@ -46,7 +46,14 @@
 
 ### preExecute 检查Docker环境并清理无效镜像
  
-入参无，返回值无
+入参
+````
+/**
+ * @param docker : dockerode 的实例
+ * @param cleanUselessImage : 是否清理镜像
+ */
+````
+返回值无
 
 ### checkDocker 检查Docker环境
  
@@ -54,7 +61,14 @@
 
 ### cleanUselessImagesByTag 清理无效镜像
  
-入参无，返回值无
+入参
+````
+/**
+ * @param docker : dockerode 的实例
+ * @param cleanUselessImage : 是否清理镜像
+ */
+````
+返回值无
 
 
 ### genContainerResourcesLimitConfig 生成容器资源限制配置
