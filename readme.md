@@ -21,7 +21,7 @@
 ````
 返回 `fc 客户端`
 
-### IMAGE_VERSION 镜像的版本
+### IMAGE_VERSION 镜像的版本（常量）
 
 ### resolveRuntimeToDockerImage 获取docker 镜像的地址
 
@@ -46,7 +46,14 @@
 
 ### preExecute 检查Docker环境并清理无效镜像
  
-入参无，返回值无
+入参
+````
+/**
+ * @param docker : dockerode 的实例
+ * @param cleanUselessImage : 是否清理镜像
+ */
+````
+返回值无
 
 ### checkDocker 检查Docker环境
  
@@ -54,7 +61,14 @@
 
 ### cleanUselessImagesByTag 清理无效镜像
  
-入参无，返回值无
+入参
+````
+/**
+ * @param docker : dockerode 的实例
+ * @param cleanUselessImage : 是否清理镜像
+ */
+````
+返回值无
 
 
 ### genContainerResourcesLimitConfig 生成容器资源限制配置
@@ -96,6 +110,36 @@
 返回值
 ````
 [result: boolean, details: string]
+````
+
+### setBuildStatus 设置 build 的状态
+
+入参
+````
+/**
+ * @param serviceName 
+ * @param functionName 
+ * @param sYaml s.yaml 配置的地址，默认是 process.cwd()
+ * @param status 设置的值 `available` | `unavailable`
+ */
+````
+
+返回值 无
+
+### getBuildStatus 获取 build 的状态
+
+入参
+````
+/**
+ * @param serviceName 
+ * @param functionName 
+ * @param sYaml s.yaml 配置的地址，默认是 process.cwd()
+ */
+````
+
+返回值
+````
+{ status: boolean, error?: CatchableError }
 ````
 
 ### CatchableError 提示性错误
@@ -218,3 +262,47 @@ throw new CatchableError("Please provide region in your props.");
 ````
 
 返回 `string`
+
+
+### DeployCache deploy缓存相关（构造函数）
+
+#### 获取缓存数据
+示例
+
+````
+async function test() {
+  const sYaml = '/Users/main/fc-custom-typescript-event/s.yaml';
+  const region = 'cn-chengdu';
+  const accountID = '143********149';
+
+  const serviceName = 'test-custom-config';
+  const functionName = 'tsEventFunc';
+  const triggerNames = ['httpTrigger'];
+  const customDomains = ['auto'];
+  
+  const g = new DeployCache(accountID, region, sYaml);
+  const res = await g.getYamlState({
+    serviceName,
+    functionName,
+    triggerNames,
+    customDomains,
+  });
+  console.log(JSON.stringify(res, null, 2));
+}
+
+test()
+````
+
+#### 获取缓存Id
+
+DeployCache.genServiceStateID
+参数：(accountID: string, region: string, serviceName: string)
+
+DeployCache.genFunctionStateID
+参数：(accountID: string, region: string, serviceName: string, functionName: string)
+
+DeployCache.genTriggerStateID
+参数：(accountID: string, region: string, serviceName: string, functionName: string, triggerName: string)
+
+DeployCache.genDomainStateID
+(domainName: string, genDomainProps?: { accountID: string; region: string; serviceName: string; functionName: string; })

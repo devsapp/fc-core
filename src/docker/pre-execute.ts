@@ -4,26 +4,36 @@ import * as core from "@serverless-devs/core";
 import DraftLog from "draftlog";
 import { CatchableError } from "../utils/errors";
 import { getDockerInfo, IMAGE_VERSION } from "./utils";
+import logger from "../utils/logger";
 
 DraftLog.into(console);
 
 /**
  * 清理无效镜像
  * @param docker: Docker 实例
- * @param tag
+ * @param cleanUselessImage: 直接清理掉无效的镜像
  */
-export const cleanUselessImagesByTag = async (docker) => {
+export const cleanUselessImagesByTag = async (docker, cleanUselessImage) => {
   // TODO: loading 效果
-  const listImages: Array<any> = await docker.listImages({
-    filters: '{"label": ["maintainer=alibaba-serverless-fc"]}',
-  });
+  const listImages: Array<any> = await docker.listImages();
+  logger.debug(`listImages:: ${JSON.stringify(listImages, null, 2)}\nlength:: ${listImages.length}`);
+
   const images = _.map(
-    _.filter(listImages, (item) => {
+    _.filter(listImages, (imageItem) => {
+      const { MAINTAINER, maintainer } = imageItem.Labels || {};
+      if (!(MAINTAINER === 'alibaba-serverless-fc' || maintainer === 'alibaba-serverless-fc')) {
+        logger.debug(`return: imageItem.RepoTags is: ${imageItem.RepoTags} ${imageItem.Labels}`);
+        return false;
+      }
       try {
-        // RepoTags: aliyunfc/runtime-python3.6:1.9.21
-        const version = _.last(_.split(_.first(item.RepoTags), ":"));
-        return core.semver.lte(_.last(_.split(version, "-")), IMAGE_VERSION);
-      } catch (error) {
+        const tagVersion = _.last(_.split(_.first(imageItem.RepoTags), ":"));
+        const version = _.last(_.split(tagVersion, "-"));
+        const versionLtFlag = core.semver.lt(version, IMAGE_VERSION);
+        logger.debug(`imageItem.RepoTags is: ${imageItem.RepoTags}, versionLtFlag: ${versionLtFlag}`);
+
+        return versionLtFlag;
+      } catch (_e) {
+        logger.debug(`error: imageItem.RepoTags is: ${imageItem.RepoTags}`);
         return false;
       }
     }),
@@ -31,14 +41,20 @@ export const cleanUselessImagesByTag = async (docker) => {
       return docker.getImage(image.Id);
     }
   );
-  _.each(images, (item) => item.remove({ force: true }));
+  logger.debug(`images:: ${JSON.stringify(images, null, 2)}\nlength:: ${images.length}`);
+
+  if (cleanUselessImage) {
+    _.each(images, (item) => item.remove({ force: true }));
+  } else if (!_.isEmpty(images)) {
+    logger.warn('A lower version of the docker image is detected, you can specify --clean-useless-image to clean');
+  }
 };
 
 /**
  * 执行之前检查Docker环境
  */
-export function checkDocker() {
-  if (!commandExists("docker")) {
+export async function checkDocker() {
+  if (!(await commandExists("docker"))) {
     throw new CatchableError(
       "Failed to start docker, Please ensure that docker is installed on your computer."
     );
@@ -52,7 +68,12 @@ export function checkDocker() {
   }
 }
 
-export const preExecute = async (docker) => {
-  checkDocker();
-  await cleanUselessImagesByTag(docker);
+/**
+ * 使用 docker 前置操作
+ * @param docker: Docker 实例
+ * @param cleanUselessImage: 直接清理掉无效的镜像
+ */
+export const preExecute = async (docker, cleanUselessImage) => {
+  await checkDocker();
+  await cleanUselessImagesByTag(docker, cleanUselessImage);
 };

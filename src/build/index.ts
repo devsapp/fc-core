@@ -4,7 +4,7 @@ import { CatchableError } from "../utils/errors";
 import { IWithProps } from './interface';
 import { getBuildArtifactPath, genBuildLinkFilesListJSONPath } from './utils';
 
-export { getBuildArtifactPath, genBuildLinkFilesListJSONPath } from './utils';
+export { getBuildArtifactPath, genBuildLinkFilesListJSONPath, setBuildStatus, getBuildStatus } from './utils';
 
 /**
  * build 之后热更的能力
