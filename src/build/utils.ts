@@ -31,17 +31,17 @@ export function getBuildArtifactPath(baseDir: string, serviceName: string, funct
  * @param sYaml s.yaml 配置的地址，默认是 process.cwd()
  * @returns { status: boolean, error?: CatchableError }
  */
-export async function getBuildStatus(serviceName: string, functionName: string, sYaml: string) {
+export async function getBuildState(serviceName: string, functionName: string, sYaml: string) {
   const statusId = `${serviceName}-${functionName}-build`;
   const statusPath = path.join(sYaml || process.cwd(), '.s', 'fc-build');
 
-  const { status } = await core.getState(statusId, statusPath) || {};
-  if (status === 'unavailable') {
-    const error = new CatchableError(`${serviceName}/${functionName} build status is unavailable.Please re-execute 's build'`);
-    return { status: false, error };
+  const buildState = await core.getState(statusId, statusPath) || {};
+  if (buildState.status === 'unavailable') {
+    const error = new CatchableError(`${serviceName}/${functionName} build status is unavailable.`, "Please re-execute 's build'");
+    return { ...buildState, state: false, error };
   }
 
-  return { status: true };
+  return { ...buildState, state: true };
 }
 
 /**
@@ -51,9 +51,10 @@ export async function getBuildStatus(serviceName: string, functionName: string, 
  * @param sYaml s.yaml 配置的地址，默认是 process.cwd()
  * @param status 设置的值 `available` | `unavailable`
  */
-export async function setBuildStatus(serviceName: string, functionName: string, sYaml: string, status: string) {
+export async function setBuildState(serviceName: string, functionName: string, sYaml: string, value: { status: 'available' | 'unavailable', useLink?: boolean }) {
   const statusId = `${serviceName}-${functionName}-build`;
   const statusPath = path.join(sYaml || process.cwd(), '.s', 'fc-build');
+  const buildState = await core.getState(statusId, statusPath) || { useLink: false };
 
-  await core.setState(statusId, { status }, statusPath);
+  await core.setState(statusId, { ...buildState, ...value }, statusPath);
 }
