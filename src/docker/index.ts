@@ -21,7 +21,6 @@ export async function genContainerResourcesLimitConfig(
     throw new CatchableError(
       `ContainerMemory is too small (min: 128, actual: '${memorySize}').`
     );
-    return;
   } else if (memorySize < 3072 && memorySize % 64 !== 0) {
     throw new CatchableError(
       `ContainerMemory is set to an invalid value. The value must be a multiple of 64 MB. (actual: '${memorySize}').`
