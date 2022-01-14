@@ -112,7 +112,7 @@
 [result: boolean, details: string]
 ````
 
-### setBuildStatus 设置 build 的状态
+### setBuildState 设置 build 的状态
 
 入参
 ````
@@ -120,13 +120,13 @@
  * @param serviceName 
  * @param functionName 
  * @param sYaml s.yaml 配置的地址，默认是 process.cwd()
- * @param status 设置的值 `available` | `unavailable`
+ * @param { status: 'available' | 'unavailable'; useLink?: boolean }
  */
 ````
 
 返回值 无
 
-### getBuildStatus 获取 build 的状态
+### getBuildState 获取 build 的状态
 
 入参
 ````
@@ -139,7 +139,12 @@
 
 返回值
 ````
-{ status: boolean, error?: CatchableError }
+{
+  status: 'available' | 'unavailable',
+  useLink: boolean,
+  state: boolean,
+  error?: CatchableError
+}
 ````
 
 ### CatchableError 提示性错误
@@ -228,10 +233,14 @@ throw new CatchableError("Please provide region in your props.");
 * @param props : {
   configDirPath: yaml 路径
   codeUri: 代码路径
+  runtime: 运行时
+  useLink?: 自定义运行时强制使用 buildlink
   serviceName: 服务名称
   functionName: 函数名称
   excludeFiles: 忽略的路径
-} */
+}
+* @param checkBuildState 默认是 true
+*/
 ````
 
 返回无

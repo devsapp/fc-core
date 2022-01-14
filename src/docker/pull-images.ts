@@ -88,7 +88,7 @@ export async function pullImageIfNeed(
   if (_.size(images) === 0) {
     await pullImage(docker, imageName);
   } else {
-    logger.debug(`Skip pulling image ${imageName}...`);
+    logger.info(`Skip pulling image ${imageName}...`);
   }
 }
 

@@ -16,7 +16,7 @@ DraftLog.into(console);
 export const cleanUselessImagesByTag = async (docker, cleanUselessImage) => {
   // TODO: loading 效果
   const listImages: Array<any> = await docker.listImages();
-  logger.debug(`listImages:: ${JSON.stringify(listImages, null, 2)}\nlength:: ${listImages.length}`);
+  logger.debug(`listImages:: ${JSON.stringify(listImages)}\nlength:: ${listImages.length}`);
 
   const images = _.map(
     _.filter(listImages, (imageItem) => {
@@ -41,7 +41,7 @@ export const cleanUselessImagesByTag = async (docker, cleanUselessImage) => {
       return docker.getImage(image.Id);
     }
   );
-  logger.debug(`images:: ${JSON.stringify(images, null, 2)}\nlength:: ${images.length}`);
+  logger.debug(`images:: ${JSON.stringify(images)}\nlength:: ${images.length}`);
 
   if (cleanUselessImage) {
     _.each(images, (item) => item.remove({ force: true }));
