@@ -75,5 +75,7 @@ export async function checkDocker() {
  */
 export const preExecute = async (docker, cleanUselessImage) => {
   await checkDocker();
-  await cleanUselessImagesByTag(docker, cleanUselessImage);
+  // 参数不确定，先跳过这个功能
+  logger.debug(`docker: ${docker} cleanUselessImage: ${cleanUselessImage}`);
+  // await cleanUselessImagesByTag(docker, cleanUselessImage);
 };
