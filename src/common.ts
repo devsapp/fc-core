@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import { execSync } from 'child_process';
-import commandExists from 'command-exists';
 import os from 'os';
 import path from 'path';
+import { commandExists } from './utils';
 
 /**
  * 检查环境是否安装python，java，nodejs等语言环境
