@@ -120,7 +120,7 @@
  * @param serviceName 
  * @param functionName 
  * @param sYaml s.yaml 配置的地址，默认是 process.cwd()
- * @param { status: 'available' | 'unavailable'; useLink?: boolean }
+ * @param { status: 'available' | 'unavailable' }
  */
 ````
 
@@ -141,7 +141,6 @@
 ````
 {
   status: 'available' | 'unavailable',
-  useLink: boolean,
   state: boolean,
   error?: CatchableError
 }
@@ -234,7 +233,6 @@ throw new CatchableError("Please provide region in your props.");
   configDirPath: yaml 路径
   codeUri: 代码路径
   runtime: 运行时
-  useLink?: 自定义运行时强制使用 buildlink
   serviceName: 服务名称
   functionName: 函数名称
   excludeFiles: 忽略的路径

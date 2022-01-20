@@ -51,10 +51,54 @@ export async function getBuildState(serviceName: string, functionName: string, s
  * @param sYaml s.yaml 配置的地址，默认是 process.cwd()
  * @param status 设置的值 `available` | `unavailable`
  */
-export async function setBuildState(serviceName: string, functionName: string, sYaml: string, value: { status: 'available' | 'unavailable', useLink?: boolean }) {
+export async function setBuildState(serviceName: string, functionName: string, sYaml: string, value: { status: 'available' | 'unavailable' }) {
   const statusId = `${serviceName}-${functionName}-build`;
   const statusPath = path.join(sYaml || process.cwd(), '.s', 'fc-build');
-  const buildState = await core.getState(statusId, statusPath) || { useLink: false };
+  const buildState = await core.getState(statusId, statusPath) || {};
 
   await core.setState(statusId, { ...buildState, ...value }, statusPath);
+}
+
+/**
+ * 判断是否是解释性语言
+ * @param runtime 
+ * @param codeUri 
+ * @returns 
+ */
+export function isInterpretedLanguage(runtime: string, sourceDir: string) {
+  if (runtime.startsWith('node') || runtime.startsWith('python') || runtime.startsWith('php')) {
+    return true;
+  }
+  if (runtime !== 'custom') {
+    return false;
+  }
+
+  const { fse } = core;
+
+  const isFile = (manifestName: string) => {
+    try {
+      const manifestFilePath = path.join(sourceDir, manifestName);
+      if (fse.statSync(manifestFilePath).isFile()) {
+        return true;
+      }
+    } catch (ex) { return false; }
+  }
+
+  // 如果存在 dotnet、java 依赖清单则认为不是解释语言
+  const compileLanguages = ['pom.xml', '*.csproj'];
+  for (const compileLanguage of compileLanguages) {
+    if (isFile(compileLanguage)) {
+      return false;
+    }
+  }
+
+  // 如果存在 nodejs、python、php 依赖清单则认为是解释语言
+  const interpretedLanguages = ['package.json', 'composer.json', 'requirements.txt'];
+  for (const interpretedLanguage of interpretedLanguages) {
+    if (isFile(interpretedLanguage)) {
+      return true;
+    }
+  }
+  
+  return false;
 }
