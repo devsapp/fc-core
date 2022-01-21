@@ -1,9 +1,16 @@
 import * as core from '@serverless-devs/core';
 import GenerateSymbolicLink from './generate-symbolic-link';
 import { CatchableError } from "../utils/errors";
-import { getBuildArtifactPath, genBuildLinkFilesListJSONPath, getBuildState } from './utils';
+import { getBuildArtifactPath, genBuildLinkFilesListJSONPath, getBuildState, isInterpretedLanguage } from './utils';
+import path from 'path';
 
-export { getBuildArtifactPath, genBuildLinkFilesListJSONPath, setBuildState, getBuildState } from './utils';
+export {
+  getBuildArtifactPath,
+  genBuildLinkFilesListJSONPath,
+  setBuildState,
+  getBuildState,
+  isInterpretedLanguage,
+} from './utils';
 
 interface IWithProps {
   configDirPath: string;
@@ -42,10 +49,8 @@ export async function buildLink({
     throw buildState.error;
   }
 
-  // 如果不是 (解释性语言) 或者 (custom没有指定useLink)，跳出 build link
-  const customUseLink = runtime === 'custom' && buildState.useLink;
-  const isInterpretedLanguage = runtime.startsWith('node') || runtime.startsWith('python') || runtime.startsWith('php');
-  if (!(isInterpretedLanguage || customUseLink)) { return; }
+  // 如果不是解释性语言，跳出 build link
+  if (!isInterpretedLanguage(runtime, path.join(configDirPath, codeUri))) { return; }
 
   const vm = core.spinner('Generate symbolic link...');
   try {

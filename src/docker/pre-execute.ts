@@ -1,9 +1,8 @@
 import _ from "lodash";
-import commandExists from "command-exists";
 import * as core from "@serverless-devs/core";
 import DraftLog from "draftlog";
-import { CatchableError } from "../utils/errors";
 import { getDockerInfo, IMAGE_VERSION } from "./utils";
+import { commandExists, CatchableError } from "../utils";
 import logger from "../utils/logger";
 
 DraftLog.into(console);
