@@ -182,7 +182,7 @@ export default class SymbolicLinkGenerator {
     const toolCachePath = process.env.TOOL_CACHE_PATH || '.s';
     const ignoreFileName = this.getIgnoreFileName();
   
-    const ignoredFile = ['.git', '.svn', '.env', '.DS_Store', 'node_modules', 's.yaml', 's.yml', ignoreFileName, toolCachePath];
+    const ignoredFile = ['.git', '.svn', '.env', '.DS_Store', 'node_modules', 's.yaml', 's.yml', toolCachePath];
     const ignoreFilePath = path.join(baseDir, ignoreFileName);
   
     let fileContent = '';
