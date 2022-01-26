@@ -80,7 +80,7 @@ export async function checkLanguage(
     } else {
       version = execSync('node -v').toString().trim();
       const num = runtime.replace('nodejs', '');
-      if(semver.lt(version, num)) {
+      if(semver.lt(version, `${num}.0.0`)) {
         result = false;
         details += `Required ${runtime}, found ${version}\n`;
       } else {
