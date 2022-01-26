@@ -2,6 +2,8 @@ import * as fs from 'fs';
 import { execSync } from 'child_process';
 import os from 'os';
 import path from 'path';
+import { semver } from '@serverless-devs/core';
+
 import { commandExists } from './utils';
 
 /**
@@ -78,7 +80,7 @@ export async function checkLanguage(
     } else {
       version = execSync('node -v').toString().trim();
       const num = runtime.replace('nodejs', '');
-      if (!version.match(new RegExp(`v${num}.`))) {
+      if(semver.lt(version, num)) {
         result = false;
         details += `Required ${runtime}, found ${version}\n`;
       } else {
