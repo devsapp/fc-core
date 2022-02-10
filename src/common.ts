@@ -128,6 +128,6 @@ export function isAuto(config: string): boolean {
  * @returns 
  */
 export function genDomainName(uid: string, region: string, serviceName: string, functionName: string) {
-  return `${functionName}.${serviceName}.${uid}.${region}.fc.devsapp.net`.toLocaleLowerCase();
+  return `${functionName}.${serviceName}.${uid}.${region}.fc.devsapp.net`.replace(/_/g, '-').toLocaleLowerCase();
 }
 
