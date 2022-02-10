@@ -112,7 +112,7 @@ export function isCustomRuntime(runtime: string): boolean {
 
 /**
  * 判断配置项是否是 auto
- * @param runtime 
+ * @param config 配置信息 
  * @returns 
  */
 export function isAuto(config: string): boolean {
