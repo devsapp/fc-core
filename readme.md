@@ -313,3 +313,28 @@ DeployCache.genTriggerStateID
 
 DeployCache.genDomainStateID
 (domainName: string, genDomainProps?: { accountID: string; region: string; serviceName: string; functionName: string; })
+
+
+### startExpressService 启动一个服务
+
+入参：
+````
+/**
+ * 
+ * @param context 
+ *         port: number; // 端口号
+ *         callback: (app = express()) => void; // 回掉函数
+ *         host?: string; // 服务器地址，默认是 localhost
+ *         openBrowser?: boolean; // 是否打开浏览器
+ *         count?: number; // 端口冲突重试次数
+ * @returns 
+ */
+````
+
+返回
+````
+{
+  server,
+  stop
+}
+````
