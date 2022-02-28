@@ -58,7 +58,7 @@ export class HttpsCertConfig {
     const objectName = objectNameArr.join('/');
     logger.debug(`oss config: ${region}, ${bucketName}, ${objectName}`);
     if (!(region && bucketName && objectName)) {
-      throw new CatchableError(`${certKey} does not meet expectations, e.g: oss-cn-hangzhou://bucketName/objectName`);
+      throw new CatchableError(`${certKey} does not meet expectations, e.g: oss://oss-cn-hangzhou/bucketName/objectName`);
     }
     const ossRegion = region.startsWith('oss-') ? region : `oss-${region}`;
 
