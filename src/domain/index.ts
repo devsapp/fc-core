@@ -51,6 +51,27 @@ export class HttpsCertConfig {
     }
   }
 
+  static async getUserCertificateDetail(certId: number, opt: Opt = {}) {
+    const { credentials } = opt;
+    if (core.lodash.isEmpty(credentials)) {
+      throw new CatchableError('You need to enter a key to get the information of the certificate');
+    }
+    const { AccessKeyID, AccessKeySecret, SecurityToken } = credentials;
+    const client = new core.popCore({
+      accessKeyId: AccessKeyID,
+      accessKeySecret: AccessKeySecret,
+      securityToken: SecurityToken, // use STS Token
+      endpoint: 'https://cas.aliyuncs.com',
+      apiVersion: '2018-07-13'
+    });
+    const {
+      Key: privateKey,
+      Cert: certificate,
+      Name: certName,
+    } = await client.request('DescribeUserCertificateDetail', { CertId: certId }, { method: 'POST' });
+    return { privateKey, certificate, certName };
+  }
+
   private static async getOSSContent (certKey: string, opt: Opt): Promise<string> {
     // get oss client options
     const ossPath = certKey.substring(6);
