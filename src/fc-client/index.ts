@@ -6,6 +6,7 @@ import { checkEndpoint, getEndpointFromFcDefault } from "./endpoint";
 import logger from "../utils/logger";
 import { MakeFcClientInput } from "../utils/interface";
 import { ICredentials } from "../interface";
+import './fc-client';
 
 const DEFAULT_TIMEOUT = 600;
 

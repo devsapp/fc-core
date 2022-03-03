@@ -17,7 +17,7 @@ interface Obj {
  * 4. 调用 http 函数 content-type 不生效
  * 5. new Buffer 已经被弃用，使用会抛出异常
  */
-FC.prototype.costom_request = async function (
+FC.prototype.custom_request = async function (
   method: string,
   path: string,
   query: Obj | undefined,
