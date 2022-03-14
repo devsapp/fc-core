@@ -22,6 +22,7 @@ export async function makeFcClient(props: MakeFcClientInput) {
   if (!region) {
     throw new CatchableError("Please provide region in your props.");
   }
+  logger.debug(`make fc client ${timeout}ms`);
 
   let credentials: ICredentials;
   if (_.isEmpty(props.credentials)) {
@@ -63,7 +64,7 @@ export async function makeFcClient(props: MakeFcClientInput) {
     accessKeySecret: credentials.AccessKeySecret,
     securityToken: credentials.SecurityToken,
     region,
-    timeout: `${timeout}000`,
+    timeout,
     endpoint,
   });
 }
