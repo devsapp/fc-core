@@ -63,7 +63,7 @@ export async function makeFcClient(props: MakeFcClientInput) {
     accessKeySecret: credentials.AccessKeySecret,
     securityToken: credentials.SecurityToken,
     region,
-    timeout: timeout * 1000 || DEFAULT_TIMEOUT,
+    timeout: `${timeout}000`,
     endpoint,
   });
 }
