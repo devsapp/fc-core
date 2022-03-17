@@ -2,7 +2,7 @@ Type: Component
 Name: fc-core
 Provider:
   - 其它
-Version: 0.0.12
+Version: 0.0.13
 Description: FC公共组件
 HomePage: https://www.serverless-devs.com
 Tags: #标签详情

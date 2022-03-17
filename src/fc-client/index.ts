@@ -8,6 +8,8 @@ import { MakeFcClientInput } from "../utils/interface";
 import { ICredentials } from "../interface";
 import './fc-client';
 
+export { getEndpointFromFcDefault } from './endpoint';
+
 const DEFAULT_TIMEOUT = 600;
 
 /**
