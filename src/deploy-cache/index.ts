@@ -71,6 +71,11 @@ export class DeployCache {
     return stateRes;
   }
 
+  static getCreateResourceStateID (accountID: string, region: string, serviceName: string) {
+    const cacheId = `${accountID}-${region}-${serviceName}_create_resource`;
+    return path.join('fc-cache', cacheId);
+  }
+
   /**
    * 获取服务缓存的标示
    * @param serviceName 
