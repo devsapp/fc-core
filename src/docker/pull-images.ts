@@ -100,6 +100,7 @@ const runtimeImageMap: { [key: string]: string } = {
   nodejs14: "nodejs14",
   "python2.7": "python2.7",
   python3: "python3.6",
+  'python3.9': "python3.9",
   java8: "java8",
   java11: "java11",
   "php7.2": "php7.2",
