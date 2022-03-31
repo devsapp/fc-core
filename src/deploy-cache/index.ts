@@ -23,6 +23,19 @@ export class DeployCache {
     }
   }
 
+  static async setCreateResourceState(stateId: string, data: { key: string; value: any }, sPath = process.cwd()) {
+    const cachePath = path.join(sPath, '.s')
+    const cacheData = (await core.getState(stateId, cachePath)) || {};
+    const { key, value } = data;
+    cacheData[key] = value;
+    await core.setState(stateId, cacheData, cachePath);
+  }
+
+  static async getCreateResourceState(stateId: string, sPath = process.cwd()) {
+    const cachePath = path.join(sPath, '.s')
+    return (await core.getState(stateId, cachePath)) || {};
+  }
+
   async getYamlState(props: { serviceName: string; functionName: string; triggerNames?: string[]; customDomains?: string[] }) {
     const {
       serviceName,
