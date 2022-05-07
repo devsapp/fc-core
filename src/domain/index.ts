@@ -9,7 +9,7 @@ interface Opt {
   credentials?: ICredentials;
 }
 
-interface CertConfig{
+interface CertConfig {
   certName?: string;
   certificate: string;
   privateKey: string;
@@ -60,6 +60,7 @@ export class HttpsCertConfig {
     const client = new core.popCore({
       accessKeyId: AccessKeyID,
       accessKeySecret: AccessKeySecret,
+      // @ts-ignore
       securityToken: SecurityToken, // use STS Token
       endpoint: 'https://cas.aliyuncs.com',
       apiVersion: '2018-07-13'
@@ -69,10 +70,13 @@ export class HttpsCertConfig {
       Cert: certificate,
       Name: certName,
     } = await client.request('DescribeUserCertificateDetail', { CertId: certId }, { method: 'POST' });
+    if (core.lodash.isEmpty(certName)) {
+      throw new CatchableError(`Key information not found according to certId: ${certId}`);
+    }
     return { privateKey, certificate, certName };
   }
 
-  private static async getOSSContent (certKey: string, opt: Opt): Promise<string> {
+  private static async getOSSContent(certKey: string, opt: Opt): Promise<string> {
     // get oss client options
     const ossPath = certKey.substring(6);
     const [region, bucketName, ...objectNameArr] = ossPath.split('/');
@@ -99,7 +103,7 @@ export class HttpsCertConfig {
     return (await ossClient.get(objectName))?.content?.toString();
   }
 
-  private static async getHttpContent (certKey: string) {
+  private static async getHttpContent(certKey: string) {
     return await core.request(certKey, {
       hint: {
         loading: 'Getting privatekey and certificate...',
