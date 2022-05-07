@@ -1,14 +1,15 @@
 import _ from "lodash";
 import FC from "@alicloud/fc2";
-import { getCredential } from '@serverless-devs/core';
+import { getCredential } from "@serverless-devs/core";
 import { CatchableError } from "../utils/errors";
 import { checkEndpoint, getEndpointFromFcDefault } from "./endpoint";
 import logger from "../utils/logger";
 import { MakeFcClientInput } from "../utils/interface";
 import { ICredentials } from "../interface";
-import './fc-client';
+import "./fc-client";
 
-export { getEndpointFromFcDefault } from './endpoint';
+export { getEndpointFromFcDefault } from "./endpoint";
+export * as alicloudFc2 from "@alicloud/fc2";
 
 const DEFAULT_TIMEOUT = 600;
 
