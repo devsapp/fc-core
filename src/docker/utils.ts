@@ -3,7 +3,7 @@ import { execSync } from "child_process";
 
 /**
  * 获取 docker 的信息
- * @returns 
+ * @returns
  */
 export function getDockerInfo(): any {
   const execRes = execSync('docker info --format "{{json .}}"');
@@ -40,7 +40,7 @@ export function bytesToSize(bytes: number): String {
 /**
  * 当前镜像版本
  */
-export const IMAGE_VERSION: string = process.env.FC_DOCKER_VERSION || "1.10.1";
+export const IMAGE_VERSION: string = process.env.FC_DOCKER_VERSION || "1.10.2";
 
 /**
  * docker的默认registry
