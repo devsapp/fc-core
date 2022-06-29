@@ -35,7 +35,7 @@ export async function makeFcClient(props: MakeFcClientInput) {
       AccessKeyID: credentialRes?.AccessKeyID,
       AccessKeySecret: credentialRes?.AccessKeySecret,
       SecurityToken: credentialRes?.SecurityToken,
-      endpoint: credentialRes?.endpoing,
+      endpoint: credentialRes?.endpoint,
     };
   } else {
     credentials = props.credentials;
