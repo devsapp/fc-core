@@ -31,7 +31,7 @@ export default class SymbolicLinkGenerator {
   options: { [key: string]: any; };
 
   constructor(configDirPath: string, codeUri: string, artifactPath: string, buildFilesListJSONPath: string, excludeFiles?: string[]) {
-    this.sourceDir = path.resolve(codeUri);
+    this.sourceDir = path.resolve(configDirPath, codeUri);
     this.buildDir = artifactPath;
     this.excludeFiles = excludeFiles;
     this.buildFilesListJSONPath = buildFilesListJSONPath;
