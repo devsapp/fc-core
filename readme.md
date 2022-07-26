@@ -29,6 +29,9 @@
 - [preExecute](#preExecute)：检查 Docker 环境并清理无效镜像
 - [pullImageIfNeed](#pullImageIfNeed)：是否需要拉取镜像
 - [resolveRuntimeToDockerImage](#resolveRuntimeToDockerImage)：获取 docker 镜像的地址
+- [makeNasClient](#makeNasClient)：获取 NAS 客户端
+- [checkNasMountTargetsExists](#checkNasMountTargetsExists)：验证 nas 挂载点是否存在
+
 
 ### isInterpretedLanguage
 
@@ -526,3 +529,41 @@ DeployCache.genTriggerStateID
 DeployCache.genDomainStateID
 (domainName: string, genDomainProps?: { accountID: string; region: string; serviceName: string; functionName: string; })
 ```
+
+### makeNasClient
+
+获取 NAS 客户端
+
+入参
+
+```
+profile: {
+  AccessKeyID?: string;
+  AccessKeySecret?: string;
+  SecurityToken?: string;
+};
+region: string;
+options?: {
+  timeout?: number; # 默认 600 * 1000
+}
+```
+
+### checkNasMountTargetsExists
+
+验证 nas 挂载点是否存在
+
+入参
+
+```
+profile: {
+  AccessKeyID?: string;
+  AccessKeySecret?: string;
+  SecurityToken?: string;
+};
+payload: {
+  region: string;
+  mountTarget: string;
+};
+```
+
+返回值 `boolean`
