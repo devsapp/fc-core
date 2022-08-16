@@ -1,5 +1,4 @@
-import Pop from '@alicloud/pop-core';
-import { lodash } from '@serverless-devs/core';
+import { lodash, popCore as Pop } from '@serverless-devs/core';
 import { ICredentials } from '../interface';
 
 const TIMEOUT = 600 * 1000;
