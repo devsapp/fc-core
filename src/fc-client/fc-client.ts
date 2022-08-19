@@ -132,6 +132,18 @@ FC.prototype.get_all_list_data = async function (
   return data;
 };
 
+FC.prototype._createVpcBinding = async function(serviceName, options, headers) {
+  return this.post(`/services/${serviceName}/binding`, options, headers);
+}
+
+FC.prototype._deleteVpcBinding = async function(serviceName, options, headers) {
+  return this.request('DELETE', `/services/${serviceName}/binding`, null, options, headers);
+}
+
+FC.prototype._listVpcbinding = async function(serviceName, options, headers) {
+  return this.get(`/services/${serviceName}/bindings`, options, headers);
+}
+
 /**
  * 处理请求体
  * @param contentType 请求头 contentType
