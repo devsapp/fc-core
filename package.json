@@ -20,6 +20,8 @@
     "Function Compute"
   ],
   "scripts": {
+    "preln": "rm -rf ~/.s/components/devsapp.cn/devsapp/fc-core/dist",
+    "ln": "ln -s $(pwd)/dist ~/.s/components/devsapp.cn/devsapp/fc-core/dist",
     "start": "npm run watch",
     "prestart": "npm run prebuild",
     "watch": "tsc -w",
