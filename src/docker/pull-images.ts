@@ -106,6 +106,7 @@ const runtimeImageMap: { [key: string]: string } = {
   "php7.2": "php7.2",
   "dotnetcore2.1": "dotnetcore2.1",
   custom: "custom",
+  go1: "go1",
 };
 
 /**
@@ -119,8 +120,12 @@ export async function resolveRuntimeToDockerImage(
   isBuild?: boolean
 ): Promise<string> {
   if (runtimeImageMap[runtime]) {
+    if (runtime === 'go1' && isBuild) {
+      throw new CatchableError(`invalid runtime name ${runtime}`);
+    }
+
     const name = runtimeImageMap[runtime];
-    var imageName;
+    let imageName;
     if (isBuild) {
       imageName = `aliyunfc/runtime-${name}:build-${IMAGE_VERSION}`;
     } else {
