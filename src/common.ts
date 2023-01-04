@@ -2,9 +2,10 @@ import * as fs from 'fs';
 import { execSync } from 'child_process';
 import os from 'os';
 import path from 'path';
-import { semver } from '@serverless-devs/core';
+import { semver, lodash as _ } from '@serverless-devs/core';
 
 import { commandExists } from './utils';
+import logger from './utils/logger';
 
 /**
  * 检查环境是否安装python，java，nodejs等语言环境
@@ -42,10 +43,10 @@ export async function checkLanguage(
       result = false;
       details += '- maven not installed.\n';
     } else {
-      details += `- ${execSync('mvn --version')
-        .toString()
-        .split('\n')[0]
-        .replace(/\x1b|\[m|\[1m/g, '')}\n`;
+      const mvnVersionString = execSync('mvn --version').toString();
+      logger.debug(`mvnVersionString: ${mvnVersionString}`);
+      const mvnVersion = _.split(mvnVersionString, '\n')[0];
+      details += `- ${_.replace(mvnVersion, /\x1b|\[m|\[1m/g, '')}\n`;
     }
 
     if (!commandExists('java')) {
@@ -62,7 +63,9 @@ export async function checkLanguage(
       const version = execSync(
         `javac ${javaSourceFilePath} && java -classpath ${folder} test`
       ).toString();
-      if (runtime.match(`java${version.split('.')[0]}`)) {
+      logger.debug(`java: ${version}`);
+      logger.debug(`java: ${_.split(version, '.')}`);
+      if (runtime.match(`java${_.split(version, '.')[0]}`)) {
         details += `- java ${version}`;
       } else {
         details += `Required ${runtime}, found java ${version}`;
@@ -80,7 +83,7 @@ export async function checkLanguage(
     } else {
       version = execSync('node -v').toString().trim();
       const num = runtime.replace('nodejs', '');
-      if(semver.lt(version, `${num}.0.0`)) {
+      if (semver.lt(version, `${num}.0.0`)) {
         result = false;
         details += `Required ${runtime}, found ${version}\n`;
       } else {

@@ -89,7 +89,8 @@ export class HttpsCertConfig {
   ): Promise<string> {
     // get oss client options
     const ossPath = certKey.substring(6);
-    const [region, bucketName, ...objectNameArr] = ossPath.split("/");
+    logger.debug(`ossPath: ${ossPath}`);
+    const [region, bucketName, ...objectNameArr] = core.lodash.split(ossPath, "/");
     const objectName = objectNameArr.join("/");
     logger.debug(`oss config: ${region}, ${bucketName}, ${objectName}`);
     if (!(region && bucketName && objectName)) {
