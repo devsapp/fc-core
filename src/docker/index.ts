@@ -50,9 +50,8 @@ export async function genContainerResourcesLimitConfig(
     logger.debug(`The memory config exceeds the docker limit. The memory actually allocated: ${bytesToSize(
       memory
     )}.
-Now the limit of RAM resource is ${MemTotal} bytes. To improve the limit, please refer: https://docs.docker.com/desktop/${
-      isWin ? "windows" : "mac"
-    }/#resources.`);
+Now the limit of RAM resource is ${MemTotal} bytes. To improve the limit, please refer: https://docs.docker.com/desktop/${isWin ? "windows" : "mac"
+      }/#resources.`);
   }
 
   const ulimits: any = [
