@@ -53,18 +53,14 @@ export const cleanUselessImagesByTag = async (docker, cleanUselessImage) => {
  * 执行之前检查Docker环境
  */
 export async function checkDocker() {
-  if (process.platform === 'win32') {
-    return;
-  }
-
   if (!(await commandExists("docker"))) {
-    throw new CatchableError(
+    logger.warn(
       "Failed to start docker, Please ensure that docker is installed on your computer."
     );
   } else {
     const dockerInfo = getDockerInfo();
     if (!_.isEmpty(_.get(dockerInfo, "ServerErrors"))) {
-      throw new CatchableError(
+      logger.warn(
         "Failed to start docker, Please ensure that docker is started on your computer."
       );
     }
