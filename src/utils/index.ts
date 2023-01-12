@@ -11,3 +11,8 @@ export function commandExists(command) {
     return false;
   }
 }
+
+export function isChinaTimeZone() {
+  const utc = 0 - new Date().getTimezoneOffset() / 60;
+  return utc === 8;
+}

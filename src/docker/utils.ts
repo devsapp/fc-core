@@ -46,8 +46,5 @@ export const IMAGE_VERSION: string = process.env.FC_DOCKER_VERSION || "1.10.3";
  * docker的默认registry
  */
 export const DEFAULT_REGISTRY: string = "registry.hub.docker.com";
-
-export const DOCKER_REGISTRIES = [
-  "registry.cn-beijing.aliyuncs.com",
-  "registry.hub.docker.com",
-];
+export const ALIYUN_REGISTRY: string = "registry.cn-beijing.aliyuncs.com";
+export const DEFAULT_REPO_NAME: string = "aliyunfc";

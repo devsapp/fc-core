@@ -50,9 +50,8 @@ export async function genContainerResourcesLimitConfig(
     logger.debug(`The memory config exceeds the docker limit. The memory actually allocated: ${bytesToSize(
       memory
     )}.
-Now the limit of RAM resource is ${MemTotal} bytes. To improve the limit, please refer: https://docs.docker.com/desktop/${
-      isWin ? "windows" : "mac"
-    }/#resources.`);
+Now the limit of RAM resource is ${MemTotal} bytes. To improve the limit, please refer: https://docs.docker.com/desktop/${isWin ? "windows" : "mac"
+      }/#resources.`);
   }
 
   const ulimits: any = [
@@ -76,14 +75,18 @@ export async function isDockerToolBox() {
   // check version
   const dockerInfo = getDockerInfo();
   const serverVersion = dockerInfo.ServerVersion;
-  const cur = serverVersion.split(".");
+  logger.debug(`serverVersion: ${serverVersion}`);
+  const cur = _.split(serverVersion, ".");
   // 1.13.1
   if (Number.parseInt(cur[0]) === 1 && Number.parseInt(cur[1]) <= 13) {
     const errorMessage = `We detected that your docker version is ${serverVersion}, for a better experience, please upgrade the docker version.`;
     throw new CatchableError(errorMessage);
   }
   // return isDockerToolBox
-  const obj = _.map(dockerInfo.Labels || [], (e) => _.split(e, "=", 2))
+  const obj = _.map(dockerInfo.Labels || [], (e) => {
+    logger.debug(`dockerInfo.Labels: ${e}`);
+    return _.split(e, "=", 2)
+  })
     .filter((e) => e.length === 2)
     .reduce((acc, cur) => ((acc[cur[0]] = cur[1]), acc), {});
   return process.platform === "win32" && obj.provider === "virtualbox";

@@ -1,36 +1,12 @@
 import _ from "lodash";
-import * as httpx from "httpx";
+import { isChinaTimeZone } from "../utils";
+// import * as httpx from "httpx";
 import { CatchableError } from "../utils/errors";
 import logger from "../utils/logger";
-import { IMAGE_VERSION, DEFAULT_REGISTRY, DOCKER_REGISTRIES } from "./utils";
-
-let DOCKER_REGISTRY_CACHE = null;
-
-async function resolveDockerRegistry(imageName: string): Promise<any> {
-  if (DOCKER_REGISTRY_CACHE) {
-    return DOCKER_REGISTRY_CACHE;
-  }
-  const promises = DOCKER_REGISTRIES.map((r) =>
-    httpx
-      .request(`https://${r}/v2/aliyunfc/runtime-nodejs8/tags/list`, {
-        timeout: 2500,
-      })
-      .then(() => r)
-  );
-  try {
-    DOCKER_REGISTRY_CACHE = await Promise.race(promises);
-  } catch (error) {
-    DOCKER_REGISTRY_CACHE = DEFAULT_REGISTRY;
-  }
-  if (DOCKER_REGISTRY_CACHE) {
-    return imageName;
-  }
-}
+import { IMAGE_VERSION, DEFAULT_REGISTRY, DEFAULT_REPO_NAME, ALIYUN_REGISTRY } from "./utils";
 
 async function pullImage(docker, imageName: string): Promise<string> {
-  const resolveImageName: string = await resolveDockerRegistry(imageName);
-
-  const stream = await docker.pull(resolveImageName);
+  const stream = await docker.pull(imageName);
 
   return await new Promise((resolve, reject) => {
     logger.debug(`Begin pulling image ${imageName}, you can also use docker pull ${imageName} to pull image by yourself.`);
@@ -127,13 +103,24 @@ export async function resolveRuntimeToDockerImage(
     const name = runtimeImageMap[runtime];
     let imageName;
     if (isBuild) {
-      imageName = `aliyunfc/runtime-${name}:build-${IMAGE_VERSION}`;
+      imageName = `${DEFAULT_REPO_NAME}/runtime-${name}:build-${IMAGE_VERSION}`;
     } else {
-      imageName = `aliyunfc/runtime-${name}:${IMAGE_VERSION}`;
+      imageName = `${DEFAULT_REPO_NAME}/runtime-${name}:${IMAGE_VERSION}`;
     }
 
-    logger.debug("imageName: " + imageName);
-    return imageName;
+    const resolveRegistryImage = await resolveDockerRegistry(imageName);
+    logger.debug("need use image: " + resolveRegistryImage);
+    return resolveRegistryImage;
   }
   throw new CatchableError(`invalid runtime name ${runtime}`);
+}
+
+async function resolveDockerRegistry(imageName: string): Promise<any> {
+  if (process.env.FC_DOCKER_REGISTRY) {
+    return `${process.env.FC_DOCKER_REGISTRY}/${imageName}`;
+  }
+  if (isChinaTimeZone()) {
+    return `${ALIYUN_REGISTRY}/${imageName}`;
+  }
+  return `${DEFAULT_REGISTRY}/${imageName}`;
 }
