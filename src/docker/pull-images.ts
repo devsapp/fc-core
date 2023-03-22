@@ -68,7 +68,7 @@ export async function pullImageIfNeed(
   }
 }
 
-const runtimeImageMap: { [key: string]: string } = {
+const runtimeImageMap: Record<string, string> = {
   nodejs6: "nodejs6",
   nodejs8: "nodejs8",
   nodejs10: "nodejs10",
@@ -77,11 +77,13 @@ const runtimeImageMap: { [key: string]: string } = {
   "python2.7": "python2.7",
   python3: "python3.6",
   'python3.9': "python3.9",
+  'python3.10': "python3.10",
   java8: "java8",
   java11: "java11",
   "php7.2": "php7.2",
   "dotnetcore2.1": "dotnetcore2.1",
   custom: "custom",
+  "custom.debian10": "custom.debian10",
   go1: "go1",
 };
 
