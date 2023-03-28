@@ -25,7 +25,7 @@
     "start": "npm run watch",
     "prestart": "npm run prebuild",
     "watch": "tsc -w",
-    "prebuild": "rm -rf node_modules && rm -rf package-lock.json && npm i && rimraf dist",
+    "prebuild": "rm -rf node_modules && npm i && rimraf dist",
     "esbuild": "esbuild src/index.ts --bundle --log-level=error --minify --platform=node --format=cjs --target=node10.4 --external:@serverless-devs/core --outfile=dist/index.js",
     "build": "npm run esbuild"
   },
