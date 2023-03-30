@@ -40,7 +40,7 @@ export function bytesToSize(bytes: number): String {
 /**
  * 当前镜像版本
  */
-export const IMAGE_VERSION: string = process.env.FC_DOCKER_VERSION || "1.10.7";
+export const IMAGE_VERSION: string = process.env.FC_DOCKER_VERSION || "1.10.8";
 
 /**
  * docker的默认registry
