@@ -70,14 +70,16 @@ export class HttpsCertConfig {
       endpoint: "https://cas.aliyuncs.com",
       apiVersion: "2018-07-13",
     });
-    const { Key: privateKey, Cert: certificate } = await client.request(
+    const { Key: privateKey, Cert: certificate, RequestId } = await client.request(
       "DescribeUserCertificateDetail",
       { CertId: certId },
       { method: "POST" }
     );
+    logger.debug(`Get User Certificate Details RequestId: ${RequestId || ''}`);
     if (core.lodash.isEmpty(privateKey)) {
       throw new CatchableError(
-        `Key information not found according to certId: ${certId}`
+        `Key information not found according to certId: ${certId}`,
+        `DescribeUserCertificateDetail RequestId is: ${RequestId || ''}`
       );
     }
     return { privateKey, certificate, certName: `cret-${certId}` };
