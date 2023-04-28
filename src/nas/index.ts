@@ -24,7 +24,7 @@ export async function checkNasMountTargetsExists(profile: ICredentials, payload:
   const { region, mountTarget } = payload || {};
   const client = makeNasClient(profile, region);
 
-  const result = await client.request('DescribeFileSystems', {}, requestOption);
+  const result = await client.request('DescribeFileSystems', { PageSize: 100 }, requestOption);
   const fileSystems = get(result, 'FileSystems.FileSystem', []);
   for (const fileSystem of fileSystems) {
     const mountTargets = get(fileSystem, 'MountTargets.MountTarget', []);
