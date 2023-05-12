@@ -56,11 +56,19 @@ export async function pullImageIfNeed(
   docker,
   imageName: string
 ): Promise<void> {
-  const images: Array<any> = await docker.listImages({
-    filters: {
-      reference: [imageName],
-    },
-  });
+  let images: Array<any> = [];
+  try {
+    images = await docker.listImages({
+      filters: {
+        reference: [imageName],
+      },
+    });
+  } catch (error) {
+    const allImages = await docker.listImages();
+    images = _.filter(allImages, item => 
+      _.includes(item.RepoTags, imageName)
+    );
+  }
   if (_.size(images) === 0) {
     await pullImage(docker, imageName);
   } else {
