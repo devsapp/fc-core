@@ -1,3 +1,9 @@
+/*
+ * @Date: 2023-03-30 13:23:33
+ * @LastEditors: wss wssgryx@163.com
+ * @LastEditTime: 2023-05-16 18:25:22
+ * @FilePath: /fc-core/src/docker/utils.ts
+ */
 import _ from "lodash";
 import { execSync } from "child_process";
 
@@ -40,7 +46,7 @@ export function bytesToSize(bytes: number): String {
 /**
  * 当前镜像版本
  */
-export const IMAGE_VERSION: string = process.env.FC_DOCKER_VERSION || "1.10.8";
+export const IMAGE_VERSION: string = process.env.FC_DOCKER_VERSION || "1.10.9";
 
 /**
  * docker的默认registry
