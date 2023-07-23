@@ -69,5 +69,6 @@ export async function makeFcClient(props: MakeFcClientInput) {
     region,
     timeout,
     endpoint,
+    secure: true,
   });
 }
