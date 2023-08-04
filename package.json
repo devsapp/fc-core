@@ -30,7 +30,7 @@
     "build": "npm run esbuild"
   },
   "dependencies": {
-    "@alicloud/fc2": "^2.6.5",
+    "@alicloud/fc2": "^2.6.6",
     "@serverless-devs/core": "latest",
     "ali-oss": "^6.17.1",
     "command-exists": "^1.2.9",
