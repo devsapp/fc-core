@@ -62,6 +62,7 @@ export async function makeFcClient(props: MakeFcClientInput) {
   if (endpoint) {
     logger.debug(`Using endpoint ${endpoint}`);
   }
+  const headers = { 'user-agent': 'serverless-devs2.0' }
   return new FC(credentials.AccountID, {
     accessKeyID: credentials.AccessKeyID,
     accessKeySecret: credentials.AccessKeySecret,
@@ -69,5 +70,6 @@ export async function makeFcClient(props: MakeFcClientInput) {
     region,
     timeout,
     endpoint,
+    headers
   });
 }
